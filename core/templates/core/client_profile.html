@@ -1,3 +1,18 @@
-<h1>{{ client.full_name }}</h1>
-<p>Age: {{ client.age }}</p>
-<p>Contact: {{ client.contact }}</p>
+<!-- client_profile.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Client Profile</title>
+</head>
+<body>
+    <h1>{{ client.full_name }}</h1>
+    <p>Contact: {{ client.contact }}</p>
+    <p>Gender: {{ client.gender }}</p>
+    <p>Enrolled Programs:</p>
+    <ul>
+        {% for program in client.programs.all %}
+            <li>{{ program.name }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
