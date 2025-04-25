@@ -23,7 +23,7 @@ def verify_health_program_id(health_program_id):
 
 # function to show the details of health_program(s) given in a list (provided as a parameter)
 def show_health_program_details(list_of_health_programs):
-    health_program_titles = ['health_program ID', 'health_program name', 'Description', 'Contact number',
+    health_program_titles = ['Health program ID', 'Health program name', 'Description', 'Contact number',
                      'Alternate contact number', 'Address', 'Email ID']
     if len(list_of_health_programs) == 0:
         st.warning('No data to show')
@@ -85,8 +85,8 @@ class Health_program:
 
     # method to add a new health_program record to the database
     def add_health_program(self):
-        st.write('Enter health_program details:')
-        self.name = st.text_input('health_program name')
+        st.write('Enter health program details:')
+        self.name = st.text_input('Health program name')
         self.description = st.text_area('Description')
         self.contact_number_1 = st.text_input('Contact number')
         contact_number_2 = st.text_input('Alternate contact number (optional)')
@@ -118,17 +118,17 @@ class Health_program:
                         'email_id': self.email_id
                     }
                 )
-            st.success('Health_program details saved successfully.')
-            st.write('The Health_program ID is: ', self.id)
+            st.success('Health program details saved successfully.')
+            st.write('The Health program ID is: ', self.id)
             conn.close()
 
     # method to update an existing health_program record in the database
     def update_health_program(self):
-        id = st.text_input('Enter Health_program ID of the health_program to be updated')
+        id = st.text_input('Enter Health program ID of the health program to be updated')
         if id == '':
             st.empty()
         elif not verify_health_program_id(id):
-            st.error('Invalid Health_program ID')
+            st.error('Invalid Health program ID')
         else:
             st.success('Verified')
             conn, c = db.connection()
@@ -143,10 +143,10 @@ class Health_program:
                     """,
                     { 'id': id }
                 )
-                st.write('Here are the current details of the health_program:')
+                st.write('Here are the current details of the health program:')
                 show_health_program_details(c.fetchall())
 
-            st.write('Enter new details of the health_program:')
+            st.write('Enter new details of the health program:')
             self.description = st.text_area('Description')
             self.contact_number_1 = st.text_input('Contact number')
             contact_number_2 = st.text_input('Alternate contact number (optional)')
@@ -173,16 +173,16 @@ class Health_program:
                             'address': self.address, 'email_id': self.email_id
                         }
                     )
-                st.success('Health_program details updated successfully.')
+                st.success('Health program details updated successfully.')
                 conn.close()
 
     # method to delete an existing health_program record from the database
     def delete_health_program(self):
-        id = st.text_input('Enter Health_program ID of the health_program to be deleted')
+        id = st.text_input('Enter Health program ID of the health program to be deleted')
         if id == '':
             st.empty()
         elif not verify_health_program_id(id):
-            st.error('Invalid Health_program ID')
+            st.error('Invalid Health program ID')
         else:
             st.success('Verified')
             conn, c = db.connection()
@@ -197,7 +197,7 @@ class Health_program:
                     """,
                     { 'id': id }
                 )
-                st.write('Here are the details of the health_program to be deleted:')
+                st.write('Here are the details of the health program to be deleted:')
                 show_health_program_details(c.fetchall())
 
                 confirm = st.checkbox('Check this box to confirm deletion')
@@ -213,7 +213,7 @@ class Health_program:
                             """,
                             { 'id': id }
                         )
-                        st.success('Health_program details deleted successfully.')
+                        st.success('Health program details deleted successfully.')
             conn.close()
 
     # method to show the complete health_program record
@@ -231,11 +231,11 @@ class Health_program:
 
     # method to search and show a particular health_program's details in the database using health_program id
     def search_health_program(self):
-        id = st.text_input('Enter Health_program ID of the health_program to be searched')
+        id = st.text_input('Enter Health program ID of the health program to be searched')
         if id == '':
             st.empty()
         elif not verify_health_program_id(id):
-            st.error('Invalid Health_program ID')
+            st.error('Invalid Health program ID')
         else:
             st.success('Verified')
             conn, c = db.connection()
@@ -248,17 +248,17 @@ class Health_program:
                     """,
                     { 'id': id }
                 )
-                st.write('Here are the details of the health_program you searched for:')
+                st.write('Here are the details of the health program you searched for:')
                 show_health_program_details(c.fetchall())
             conn.close()
 
     # method to show the list of doctors working in a particular health_program (using health_program id)
     def list_dept_doctors(self):
-        dept_id = st.text_input('Enter Health_program ID to get a list of doctors working in that health_program')
+        dept_id = st.text_input('Enter Health program ID to get a list of doctors working in that health program')
         if dept_id == '':
             st.empty()
         elif not verify_health_program_id(dept_id):
-            st.error('Invalid health_program ID')
+            st.error('Invalid health program ID')
         else:
             st.success('Verified')
             conn, c = db.connection()
@@ -267,7 +267,7 @@ class Health_program:
                     """
                     SELECT id, name
                     FROM doctor_record
-                    WHERE health_program_id = :dept_id;
+                    WHERE health_program_id = :hlthpg_id;
                     """,
                     { 'dept_id': dept_id }
                 )
