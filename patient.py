@@ -38,7 +38,7 @@ def calculate_age(dob):
 def show_patient_details(list_of_patients):
     patient_titles = ['Patient ID', 'Name', 'Age', 'Gender', 'Date of birth (DD-MM-YYYY)',
                      'Blood group', 'Contact number', 'Alternate contact number',
-                     'Aadhar ID / Voter ID', 'Weight (kg)', 'Height (cm)', 'Address',
+                      'Weight (kg)', 'Height (cm)', 'Address',
                      'City', 'State', 'PIN code', "Next of kin's name",
                      "Next of kin's relation to patient",
                      "Next of kin's contact number", 'Email ID',
@@ -71,7 +71,6 @@ class Patient:
         self.date_of_registration = str()
         self.time_of_registration = str()
         self.email_id = str()
-        self.aadhar_or_voter_id = str()
         self.height = int()
         self.weight = int()
         self.next_of_kin_name = str()
@@ -98,7 +97,6 @@ class Patient:
         self.contact_number_1 = st.text_input('Contact number')
         contact_number_2 = st.text_input('Alternate contact number (optional)')
         self.contact_number_2 = (lambda phone : None if phone == '' else phone)(contact_number_2)
-        self.aadhar_or_voter_id = st.text_input('Aadhar ID / Voter ID')
         self.weight = st.number_input('Weight (in kg)', value = 0, min_value = 0, max_value = 400)
         self.height = st.number_input('Height (in cm)', value = 0, min_value = 0, max_value = 275)
         self.address = st.text_area('Address')
@@ -120,12 +118,12 @@ class Patient:
         if save:
             conn, c = db.connection()
             with conn:
-                c.execute(
+                                c.execute(
                     """
                     INSERT INTO patient_record
                     (
                         id, name, age, gender, date_of_birth, blood_group,
-                        contact_number_1, contact_number_2, aadhar_or_voter_id,
+                        contact_number_1, contact_number_2, 
                         weight, height, address,city, state, pin_code,
                         next_of_kin_name, next_of_kin_relation_to_patient,
                         next_of_kin_contact_number, email_id,
@@ -133,7 +131,7 @@ class Patient:
                     )
                     VALUES (
                         :id, :name, :age, :gender, :dob, :blood_group,
-                        :phone_1, :phone_2, :uid, :weight, :height,
+                        :phone_1, :phone_2, :weight, :height,
                         :address, :city, :state, :pin,
                         :kin_name, :kin_relation, :kin_phone, :email_id,
                         :reg_date, :reg_time
@@ -145,7 +143,7 @@ class Patient:
                         'blood_group': self.blood_group,
                         'phone_1': self.contact_number_1,
                         'phone_2': self.contact_number_2,
-                        'uid': self.aadhar_or_voter_id, 'weight': self.weight,
+                        'weight': self.weight,
                         'height': self.height, 'address': self.address,
                         'city': self.city, 'state': self.state,
                         'pin': self.pin_code, 'kin_name': self.next_of_kin_name,

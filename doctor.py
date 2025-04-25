@@ -25,8 +25,8 @@ def verify_doctor_id(doctor_id):
 # function to show the details of doctor(s) given in a list (provided as a parameter)
 def show_doctor_details(list_of_doctors):
     doctor_titles = ['Doctor ID', 'Name', 'Age', 'Gender', 'Date of birth (DD-MM-YYYY)',
-                     'Blood group', 'Health_program ID', 'Health_program name',
-                     'Contact number', 'Alternate contact number', 'Aadhar ID / Voter ID',
+                     'Blood group', 'Health program ID', 'Health program name',
+                     'Contact number', 'Alternate contact number',
                      'Email ID', 'Qualification', 'Specialisation',
                      'Years of experience', 'Address', 'City', 'State', 'PIN code']
     if len(list_of_doctors) == 0:
@@ -83,7 +83,6 @@ class Doctor:
         self.health_program_name = str()
         self.contact_number_1 = str()
         self.contact_number_2 = str()
-        self.aadhar_or_voter_id = str()
         self.email_id = str()
         self.qualification = str()
         self.specialisation = str()
@@ -118,7 +117,6 @@ class Doctor:
         self.contact_number_1 = st.text_input('Contact number')
         contact_number_2 = st.text_input('Alternate contact number (optional)')
         self.contact_number_2 = (lambda phone : None if phone == '' else phone)(contact_number_2)
-        self.aadhar_or_voter_id = st.text_input('Aadhar ID / Voter ID')
         self.email_id = st.text_input('Email ID')
         self.qualification = st.text_input('Qualification')
         self.specialisation = st.text_input('Specialisation')
@@ -140,13 +138,13 @@ class Doctor:
                     (
                         id, name, age, gender, date_of_birth, blood_group,
                         health_program_id, health_program_name, contact_number_1,
-                        contact_number_2, aadhar_or_voter_id, email_id,
+                        contact_number_2, email_id,
                         qualification, specialisation, years_of_experience,
                         address, city, state, pin_code
                     )
                     VALUES (
                         :id, :name, :age, :gender, :dob, :blood_group, :hlthpg_id,
-                        :hlthpg_name, :phone_1, :phone_2, :uid, :email_id, :qualification,
+                        :hlthpg_name, :phone_1, :phone_2, :email_id, :qualification,
                         :specialisation, :experience, :address, :city, :state, :pin
                     );
                     """,
@@ -158,7 +156,7 @@ class Doctor:
                         'hlthpg_name': self.health_program_name,
                         'phone_1': self.contact_number_1,
                         'phone_2': self.contact_number_2,
-                        'uid': self.aadhar_or_voter_id, 'email_id': self.email_id,
+                        'email_id': self.email_id,
                         'qualification': self.qualification,
                         'specialisation': self.specialisation,
                         'experience': self.years_of_experience,

@@ -58,7 +58,7 @@ def show_list_of_doctors(list_of_doctors):
         st.write(df)
 
 # function to fetch health_program name from the database for the given health_program id
-def get_health_program_name(dept_id):
+def get_health_program_name(hlthpg_id):
     conn, c = db.connection()
     with conn:
         c.execute(
@@ -67,7 +67,7 @@ def get_health_program_name(dept_id):
             FROM health_program_record
             WHERE id = :id;
             """,
-            { 'id': dept_id }
+            { 'id': hlthpg_id }
         )
     return c.fetchone()[0]
 
@@ -253,11 +253,11 @@ class Health_program:
             conn.close()
 
     # method to show the list of doctors working in a particular health_program (using health_program id)
-    def list_dept_doctors(self):
-        dept_id = st.text_input('Enter Health program ID to get a list of doctors working in that health program')
-        if dept_id == '':
+    def list_hlthpg_doctors(self):
+        hlthpg_id = st.text_input('Enter Health program ID to get a list of doctors working in that health program')
+        if hlthpg_id == '':
             st.empty()
-        elif not verify_health_program_id(dept_id):
+        elif not verify_health_program_id(hlthpg_id):
             st.error('Invalid health program ID')
         else:
             st.success('Verified')
@@ -269,8 +269,8 @@ class Health_program:
                     FROM doctor_record
                     WHERE health_program_id = :hlthpg_id;
                     """,
-                    { 'dept_id': dept_id }
+                    { 'hlthpg_id': hlthpg_id }
                 )
-                st.write('Here is the list of doctors working in the', get_health_program_name(dept_id), 'health_program:')
+                st.write('Here is the list of doctors working in the', get_health_program_name(hlthpg_id), 'health program:')
                 show_list_of_doctors(c.fetchall())
             conn.close()

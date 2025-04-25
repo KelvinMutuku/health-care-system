@@ -151,7 +151,7 @@ def health_programs():
         d.search_health_program()
     elif option == option_list[6]:
         st.subheader('DOCTORS OF A PARTICULAR HEALTH PROGRAM')
-        d.list_health_program_doctors()
+        d.list_hlthpg_doctors()
 
 # function to implement and initialise home/main menu on successful user authentication
 def home():
