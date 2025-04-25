@@ -1,12 +1,14 @@
 import sqlite3 as sql
 import config
 
+
 # function to establish connection to the database, enable foreign key constraint support, and create cursor
 def connection():
     conn = sql.connect(config.database_name + '.db')
     conn.execute("PRAGMA foreign_keys = ON;")
     c = conn.cursor()
     return conn, c
+
 
 # function to establish connection to the database and create tables (if they don't exist yet)
 def db_init():
@@ -52,7 +54,7 @@ def db_init():
                 health_program_name TEXT NOT NULL,
                 contact_number_1 TEXT NOT NULL,
                 contact_number_2 TEXT,
-                email_id TEXT NOT NULL UNIQUE,
+                email_id TEXT,
                 qualification TEXT NOT NULL,
                 specialisation TEXT NOT NULL,
                 years_of_experience INTEGER NOT NULL,
@@ -71,12 +73,12 @@ def db_init():
             """
             CREATE TABLE IF NOT EXISTS health_program_record (
                 id TEXT PRIMARY KEY,
-                name TEXT NOT NULL UNIQUE,
+                name TEXT NOT NULL,
                 description TEXT NOT NULL,
                 contact_number_1 TEXT NOT NULL,
                 contact_number_2 TEXT,
                 address TEXT NOT NULL,
-                email_id TEXT NOT NULL UNIQUE
+                email_id TEXT
             );
             """
         )
@@ -129,6 +131,21 @@ def db_init():
                 FOREIGN KEY (doctor_id) REFERENCES doctor_record(id)
                 ON UPDATE CASCADE
                 ON DELETE RESTRICT
+            );
+            """
+        )
+    with conn:
+        c.execute(
+            """
+            CREATE TABLE IF NOT EXISTS patient_program_enrollment (
+                patient_id TEXT NOT NULL,
+                health_program_id TEXT NOT NULL,
+                enrollment_date TEXT NOT NULL,  -- Or DATE type if you prefer
+                PRIMARY KEY (patient_id, health_program_id),
+                FOREIGN KEY (patient_id) REFERENCES patient_record(id)
+                    ON UPDATE CASCADE ON DELETE RESTRICT,
+                FOREIGN KEY (health_program_id) REFERENCES health_program_record(id)
+                    ON UPDATE CASCADE ON DELETE RESTRICT
             );
             """
         )

@@ -5,6 +5,7 @@ from health_program import Health_program
 from doctor import Doctor
 from prescription import Prescription
 from medical_test import Medical_Test
+import enrollment
 import config
 import sqlite3 as sql
 
@@ -35,7 +36,8 @@ def verify_dr_mls_access_code():
 # function to perform various operations of the patient module (according to user's selection)
 def patients():
     st.header('PATIENTS')
-    option_list = ['', 'Add patient', 'Update patient', 'Delete patient', 'Show complete patient record', 'Search patient']
+    option_list = ['', 'Add patient', 'Update patient', 'Delete patient',
+                   'Show complete patient record', 'Search patient', "Enroll Patient in Health Program"]  # Add the new option
     option = st.sidebar.selectbox('Select function', option_list)
     p = Patient()
     if (option == option_list[1] or option == option_list[2] or option == option_list[3]) and verify_edit_mode_password():
@@ -49,7 +51,7 @@ def patients():
             st.subheader('DELETE PATIENT')
             try:
                 p.delete_patient()
-            except sql.IntegrityError:      # handles foreign key constraint failure issue (due to integrity error)
+            except sql.IntegrityError:  # handles foreign key constraint failure issue (due to integrity error)
                 st.error('This entry cannot be deleted as other records are using it.')
     elif option == option_list[4]:
         st.subheader('COMPLETE PATIENT RECORD')
@@ -57,7 +59,26 @@ def patients():
     elif option == option_list[5]:
         st.subheader('SEARCH PATIENT')
         p.search_patient()
-
+    elif option == option_list[6]:  # New enrollment option
+        st.subheader("Enroll Patient in Program")
+        # Get lists of patients and programs for selection
+        conn, c = db.connection()
+        with conn:
+            c.execute("SELECT id, name FROM patient_record")
+            patients = c.fetchall()
+            c.execute("SELECT id, name FROM health_program_record")
+            programs = c.fetchall()
+        conn.close()
+        patient_id = st.selectbox("Select Patient", [p[0] for p in patients],
+                                     format_func=lambda x: f"{x} - {next(p[1] for p in patients if p[0] == x)}")
+        program_ids = st.multiselect("Select Health Programs", [prog[0] for prog in programs],
+                                      format_func=lambda x: f"{x} - {next(prog[1] for prog in programs if prog[0] == x)}")
+        if st.button("Enroll"):
+            for prog_id in program_ids:
+                if enrollment.enroll_patient_in_program(patient_id, prog_id):
+                    st.success(f"Enrolled patient {patient_id} in program {prog_id}")
+                else:
+                    st.warning(f"Patient {patient_id} already enrolled in program {prog_id}")
 # function to perform various operations of the doctor module (according to user's selection)
 def doctors():
     st.header('DOCTORS')
