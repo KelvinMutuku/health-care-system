@@ -31,7 +31,7 @@ def show_medical_test_details(list_of_medical_tests):
                           'Test date and time [DD-MM-YYYY (hh:mm)]',
                           'Result date and time [DD-MM-YYYY (hh:mm)]',
                           'Result and diagnosis', 'Description',
-                          'Comments', 'Cost (INR)']
+                          'Comments', 'Cost (KES)']
     if len(list_of_medical_tests) == 0:
         st.warning('No data to show')
     elif len(list_of_medical_tests) == 1:
@@ -131,7 +131,7 @@ class Medical_Test:
         result_time = st.time_input('Result time (hh:mm)', time(0, 0)).strftime('%H:%M')
         st.info('If the required time is not in the drop down list, please type it in the box above.')
         self.result_date_time = f'{result_date} ({result_time})'
-        self.cost = st.number_input('Cost (INR)', value = 0, min_value = 0, max_value = 10000)
+        self.cost = st.number_input('Cost (KES)', value = 0, min_value = 0, max_value = 10000)
         result_and_diagnosis = st.text_area('Result and diagnosis')
         self.result_and_diagnosis = (lambda res_diag : 'Test result awaited' if res_diag == '' else res_diag)(result_and_diagnosis)
         description = st.text_area('Description')

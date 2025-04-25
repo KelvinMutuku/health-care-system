@@ -106,11 +106,11 @@ class Doctor:
         self.date_of_birth = dob.strftime('%d-%m-%Y')       # converts date of birth to the desired string format
         self.age = calculate_age(dob)
         self.blood_group = st.text_input('Blood group')
-        health_program_id = st.text_input('Health_program ID')
+        health_program_id = st.text_input('Health program ID')
         if health_program_id == '':
             st.empty()
         elif not health_program.verify_health_program_id(health_program_id):
-            st.error('Invalid health_program ID')
+            st.error('Invalid health program ID')
         else:
             st.success('Verified')
             self.health_program_id = health_program_id
@@ -195,11 +195,11 @@ class Doctor:
                 show_doctor_details(c.fetchall())
 
             st.write('Enter new details of the doctor:')
-            health_program_id = st.text_input('Health_program ID')
+            health_program_id = st.text_input('Health program ID')
             if health_program_id == '':
                 st.empty()
             elif not health_program.verify_health_program_id(health_program_id):
-                st.error('Invalid health_program ID')
+                st.error('Invalid health program ID')
             else:
                 st.success('Verified')
                 self.health_program_id = health_program_id
