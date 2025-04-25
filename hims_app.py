@@ -1,7 +1,7 @@
 import streamlit as st
 import database as db
 from patient import Patient
-from department import Department
+from health_program import Health_program
 from doctor import Doctor
 from prescription import Prescription
 from medical_test import Medical_Test
@@ -124,39 +124,39 @@ def medical_tests():
         st.subheader('MEDICAL TESTS OF A PARTICULAR PATIENT')
         t.medical_tests_by_patient()
 
-# function to perform various operations of the department module (according to user's selection)
-def departments():
-    st.header('DEPARTMENTS')
-    option_list = ['', 'Add department', 'Update department', 'Delete department', 'Show complete department record', 'Search department', 'Show doctors of a particular department']
+# function to perform various operations of the health_program module (according to user's selection)
+def health_programs():
+    st.header('HEALTH PROGRAMS')
+    option_list = ['', 'Add health program', 'Update health program', 'Delete health program', 'Show complete health program record', 'Search health program', 'Show doctors of a particular health program']
     option = st.sidebar.selectbox('Select function', option_list)
-    d = Department()
+    d = Health_program()
     if (option == option_list[1] or option == option_list[2] or option == option_list[3]) and verify_edit_mode_password():
         if option == option_list[1]:
-            st.subheader('ADD DEPARTMENT')
-            d.add_department()
+            st.subheader('ADD HEALTH PROGRAM')
+            d.add_health_program()
         elif option == option_list[2]:
-            st.subheader('UPDATE DEPARTMENT')
-            d.update_department()
+            st.subheader('UPDATE HEALTH PROGRAM')
+            d.update_health_program()
         elif option == option_list[3]:
-            st.subheader('DELETE DEPARTMENT')
+            st.subheader('DELETE HEALTH PROGRAM')
             try:
-                d.delete_department()
+                d.delete_health_program()
             except sql.IntegrityError:      # handles foreign key constraint failure issue (due to integrity error)
                 st.error('This entry cannot be deleted as other records are using it.')
     elif option == option_list[4]:
-        st.subheader('COMPLETE DEPARTMENT RECORD')
-        d.show_all_departments()
+        st.subheader('COMPLETE HEALTH PROGRAM RECORD')
+        d.show_all_health_programs()
     elif option == option_list[5]:
-        st.subheader('SEARCH DEPARTMENT')
-        d.search_department()
+        st.subheader('SEARCH HEALTH PROGRAM')
+        d.search_health_program()
     elif option == option_list[6]:
-        st.subheader('DOCTORS OF A PARTICULAR DEPARTMENT')
-        d.list_dept_doctors()
+        st.subheader('DOCTORS OF A PARTICULAR HEALTH PROGRAM')
+        d.list_hlthpg_doctors()
 
 # function to implement and initialise home/main menu on successful user authentication
 def home():
     db.db_init()        # establishes connection to the database and create tables (if they don't exist yet)
-    option = st.sidebar.selectbox('Select module', ['', 'Patients', 'Doctors', 'Prescriptions', 'Medical Tests', 'Departments'])
+    option = st.sidebar.selectbox('Select module', ['', 'Patients', 'Doctors', 'Prescriptions', 'Medical Tests', 'Health Programs'])
     if option == 'Patients':
         patients()
     elif option == 'Doctors':
@@ -165,10 +165,10 @@ def home():
         prescriptions()
     elif option == 'Medical Tests':
         medical_tests()
-    elif option == 'Departments':
-        departments()
+    elif option == 'Health Programs':
+        health_programs()
 
-st.title('HEALTHCARE INFORMATION MANAGEMENT SYSTEM')
+st.title('HEALTHCARE INFORMATION SYSTEM')
 password = st.sidebar.text_input('Enter password', type = 'password')       # user password authentication
 if password == config.password:
     st.sidebar.success('Verified')

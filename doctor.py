@@ -55,17 +55,17 @@ def generate_doctor_id():
     id = f'DR-{id_1}-{id_2}'
     return id
 
-# function to fetch department name from the database for the given department id
-def get_department_name(dept_id):
+# function to fetch health_program name from the database for the given health_program id
+def get_health_program_name(hlthpg_id):
     conn, c = db.connection()
     with conn:
         c.execute(
             """
             SELECT name
-            FROM department_record
+            FROM health_program_record
             WHERE id = :id;
             """,
-            { 'id': dept_id }
+            { 'id': hlthpg_id }
         )
     return c.fetchone()[0]
 
@@ -79,8 +79,8 @@ class Doctor:
         self.gender = str()
         self.date_of_birth = str()
         self.blood_group = str()
-        self.department_id = str()
-        self.department_name = str()
+        self.health_program_id = str()
+        self.health_program_name = str()
         self.contact_number_1 = str()
         self.contact_number_2 = str()
         self.aadhar_or_voter_id = str()
@@ -106,15 +106,15 @@ class Doctor:
         self.date_of_birth = dob.strftime('%d-%m-%Y')       # converts date of birth to the desired string format
         self.age = calculate_age(dob)
         self.blood_group = st.text_input('Blood group')
-        department_id = st.text_input('Department ID')
-        if department_id == '':
+        health_program_id = st.text_input('Health_program ID')
+        if health_program_id == '':
             st.empty()
-        elif not health_program.verify_department_id(department_id):
-            st.error('Invalid Department ID')
+        elif not health_program.verify_health_program_id(health_program_id):
+            st.error('Invalid health_program ID')
         else:
             st.success('Verified')
-            self.department_id = department_id
-            self.department_name = get_department_name(department_id)
+            self.health_program_id = health_program_id
+            self.health_program_name = get_health_program_name(health_program_id)
         self.contact_number_1 = st.text_input('Contact number')
         contact_number_2 = st.text_input('Alternate contact number (optional)')
         self.contact_number_2 = (lambda phone : None if phone == '' else phone)(contact_number_2)
@@ -139,14 +139,14 @@ class Doctor:
                     INSERT INTO doctor_record
                     (
                         id, name, age, gender, date_of_birth, blood_group,
-                        department_id, department_name, contact_number_1,
+                        health_program_id, health_program_name, contact_number_1,
                         contact_number_2, aadhar_or_voter_id, email_id,
                         qualification, specialisation, years_of_experience,
                         address, city, state, pin_code
                     )
                     VALUES (
-                        :id, :name, :age, :gender, :dob, :blood_group, :dept_id,
-                        :dept_name, :phone_1, :phone_2, :uid, :email_id, :qualification,
+                        :id, :name, :age, :gender, :dob, :blood_group, :hlthpg_id,
+                        :hlthpg_name, :phone_1, :phone_2, :uid, :email_id, :qualification,
                         :specialisation, :experience, :address, :city, :state, :pin
                     );
                     """,
@@ -154,8 +154,8 @@ class Doctor:
                         'id': self.id, 'name': self.name, 'age': self.age,
                         'gender': self.gender, 'dob': self.date_of_birth,
                         'blood_group': self.blood_group,
-                        'dept_id': self.department_id,
-                        'dept_name': self.department_name,
+                        'hlthpg_id': self.health_program_id,
+                        'hlthpg_name': self.health_program_name,
                         'phone_1': self.contact_number_1,
                         'phone_2': self.contact_number_2,
                         'uid': self.aadhar_or_voter_id, 'email_id': self.email_id,
@@ -195,15 +195,15 @@ class Doctor:
                 show_doctor_details(c.fetchall())
 
             st.write('Enter new details of the doctor:')
-            department_id = st.text_input('Department ID')
-            if department_id == '':
+            health_program_id = st.text_input('Health_program ID')
+            if health_program_id == '':
                 st.empty()
-            elif not health_program.verify_department_id(department_id):
-                st.error('Invalid Department ID')
+            elif not health_program.verify_health_program_id(health_program_id):
+                st.error('Invalid health_program ID')
             else:
                 st.success('Verified')
-                self.department_id = department_id
-                self.department_name = get_department_name(department_id)
+                self.health_program_id = health_program_id
+                self.health_program_name = get_health_program_name(health_program_id)
             self.contact_number_1 = st.text_input('Contact number')
             contact_number_2 = st.text_input('Alternate contact number (optional)')
             self.contact_number_2 = (lambda phone : None if phone == '' else phone)(contact_number_2)
@@ -238,8 +238,8 @@ class Doctor:
                     c.execute(
                         """
                         UPDATE doctor_record
-                        SET age = :age, department_id = :dept_id,
-                        department_name = :dept_name, contact_number_1 = :phone_1,
+                        SET age = :age, health_program_id = :hlthpg_id,
+                        health_program_name = :hlthpg_name, contact_number_1 = :phone_1,
                         contact_number_2 = :phone_2, email_id = :email_id,
                         qualification = :qualification, specialisation = :specialisation,
                         years_of_experience = :experience, address = :address,
@@ -247,8 +247,8 @@ class Doctor:
                         WHERE id = :id;
                         """,
                         {
-                            'id': id, 'age': self.age, 'dept_id': self.department_id,
-                            'dept_name': self.department_name,
+                            'id': id, 'age': self.age, 'hlthpg_id': self.health_program_id,
+                            'hlthpg_name': self.health_program_name,
                             'phone_1': self.contact_number_1,
                             'phone_2': self.contact_number_2, 'email_id': self.email_id,
                             'qualification': self.qualification,
