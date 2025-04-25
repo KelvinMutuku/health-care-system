@@ -2,7 +2,7 @@ import streamlit as st
 from datetime import datetime, date
 import database as db
 import pandas as pd
-import department
+import health_program
 
 # function to verify doctor id
 def verify_doctor_id(doctor_id):
@@ -25,7 +25,7 @@ def verify_doctor_id(doctor_id):
 # function to show the details of doctor(s) given in a list (provided as a parameter)
 def show_doctor_details(list_of_doctors):
     doctor_titles = ['Doctor ID', 'Name', 'Age', 'Gender', 'Date of birth (DD-MM-YYYY)',
-                     'Blood group', 'Department ID', 'Department name',
+                     'Blood group', 'Health_program ID', 'Health_program name',
                      'Contact number', 'Alternate contact number', 'Aadhar ID / Voter ID',
                      'Email ID', 'Qualification', 'Specialisation',
                      'Years of experience', 'Address', 'City', 'State', 'PIN code']
@@ -109,7 +109,7 @@ class Doctor:
         department_id = st.text_input('Department ID')
         if department_id == '':
             st.empty()
-        elif not department.verify_department_id(department_id):
+        elif not health_program.verify_department_id(department_id):
             st.error('Invalid Department ID')
         else:
             st.success('Verified')
@@ -198,7 +198,7 @@ class Doctor:
             department_id = st.text_input('Department ID')
             if department_id == '':
                 st.empty()
-            elif not department.verify_department_id(department_id):
+            elif not health_program.verify_department_id(department_id):
                 st.error('Invalid Department ID')
             else:
                 st.success('Verified')

@@ -49,8 +49,8 @@ def db_init():
                 gender TEXT NOT NULL,
                 date_of_birth TEXT NOT NULL,
                 blood_group TEXT NOT NULL,
-                department_id TEXT NOT NULL,
-                department_name TEXT NOT NULL,
+                health_program_id TEXT NOT NULL,
+                health_program_name TEXT NOT NULL,
                 contact_number_1 TEXT NOT NULL,
                 contact_number_2 TEXT,
                 aadhar_or_voter_id TEXT NOT NULL UNIQUE,
@@ -62,7 +62,7 @@ def db_init():
                 city TEXT NOT NULL,
                 state TEXT NOT NULL,
                 pin_code TEXT NOT NULL,
-                FOREIGN KEY (department_id) REFERENCES department_record(id)
+                FOREIGN KEY (health_program_id) REFERENCES health_program_record(id)
                 ON UPDATE CASCADE
                 ON DELETE RESTRICT
             );
@@ -71,7 +71,7 @@ def db_init():
     with conn:
         c.execute(
             """
-            CREATE TABLE IF NOT EXISTS department_record (
+            CREATE TABLE IF NOT EXISTS health_program_record (
                 id TEXT PRIMARY KEY,
                 name TEXT NOT NULL UNIQUE,
                 description TEXT NOT NULL,
