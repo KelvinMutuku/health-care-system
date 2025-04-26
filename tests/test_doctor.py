@@ -1,6 +1,8 @@
 import unittest
 import sqlite3 as sql
 import database as db
+import sys
+import os
 
 class TestDoctorFunctions(unittest.TestCase):
 
