@@ -100,4 +100,5 @@ To get the details of the patient with ID "P-432921-250425", you would access th
 The API will return a JSON response containing the patient's information.
 
 **Note:** The API server needs to be running separately from the Streamlit application.
+**Prototype Demonstration Link:** **Deployment Link:** https://kelvinmutuku-health-care-system-hims-app-uxukq2.streamlit.app/
 **Deployment Link:** https://kelvinmutuku-health-care-system-hims-app-uxukq2.streamlit.app/
