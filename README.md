@@ -100,5 +100,12 @@ To get the details of the patient with ID "P-432921-250425", you would access th
 The API will return a JSON response containing the patient's information.
 
 **Note:** The API server needs to be running separately from the Streamlit application.
+
 **Prototype Demonstration Link:** https://drive.google.com/file/d/1liIdYRY8UGXUv69R7ms7EF49kN5O6i2F/view?usp=sharing
+
 **Deployment Link:** https://kelvinmutuku-health-care-system-hims-app-uxukq2.streamlit.app/
+
+**User Codes & Passwords:** 
+1. Login Password: Mutuku1@
+2. Doctor/medical lab scientist access code: 0000
+3. Edit mode password: 1234
